@@ -224,28 +224,66 @@ func ProxyCount() (int64, error) {
 	return count, nil
 }
 
-func ProxyRandom() (ProxyIP, error) {
-	var proxyIP ProxyIP
+func ProxyRandomCount(anonymous, protocol int, country string) (int64, error) {
 	var count int64
-	result := DB.Model(&ProxyIP{}).Count(&count)
+	db := DB.Model(&ProxyIP{})
+	if anonymous != 0 {
+		db = db.Where("Anonymous = ?", anonymous)
+	}
+	if protocol != 0 {
+		db = db.Where("Protocol = ?", protocol)
+	}
+	if country != "" {
+		db = db.Where("Country = ?", country)
+	}
+	result := db.Count(&count)
 	if result.Error != nil {
-		return ProxyIP{}, result.Error
+		return count, result.Error
 	}
 	if count == 0 {
-		return ProxyIP{}, errors.New("proxy ip number is 0")
+		return count, errors.New("proxy ip number is 0")
+	}
+	return count, nil
+}
+
+func ProxyRandom(anonymous, protocol int, country string) (ProxyIP, error) {
+	count, err := ProxyRandomCount(anonymous, protocol, country)
+	if err != nil {
+		return ProxyIP{}, err
+	}
+	var proxyIP ProxyIP
+	db := DB
+	if anonymous != 0 {
+		db = db.Where("Anonymous = ?", anonymous)
+	}
+	if protocol != 0 {
+		db = db.Where("Protocol = ?", protocol)
+	}
+	if country != "" {
+		db = db.Where("Country = ?", country)
 	}
 	rand.Seed(time.Now().UnixNano())
 	rand := rand.Int63n(count)
-	result = DB.Limit(1).Offset(rand).Find(&proxyIP)
+	result := db.Limit(1).Offset(rand).Find(&proxyIP)
 	if result.Error != nil {
 		return ProxyIP{}, result.Error
 	}
 	return proxyIP, nil
 }
 
-func ProxyAll(page, pageSize int) ([]ProxyIP, error) {
+func ProxyAll(anonymous, protocol int, country string, page, pageSize int) ([]ProxyIP, error) {
 	var proxyIPs []ProxyIP
-	result := DB.Limit(pageSize).Offset((page - 1) * pageSize).Find(&proxyIPs)
+	db := DB
+	if anonymous != 0 {
+		db = db.Where("Anonymous = ?", anonymous)
+	}
+	if protocol != 0 {
+		db = db.Where("Protocol = ?", protocol)
+	}
+	if country != "" {
+		db = db.Where("Country = ?", country)
+	}
+	result := db.Limit(pageSize).Offset((page - 1) * pageSize).Find(&proxyIPs)
 	if result.Error != nil {
 		return nil, result.Error
 	}

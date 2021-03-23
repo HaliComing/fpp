@@ -11,7 +11,10 @@ import (
 
 // 随机获取一个IP
 func ProxyRandom(c *gin.Context) {
-	random, err := models.ProxyRandom()
+	anonymous, _ := strconv.Atoi(c.Query("anonymous"))
+	protocol, _ := strconv.Atoi(c.Query("protocol"))
+	country := c.Query("country")
+	random, err := models.ProxyRandom(anonymous, protocol, country)
 	if err != nil {
 		c.JSON(200, serializer.Err(serializer.CodeNotSet, err.Error(), err))
 		return
@@ -24,7 +27,9 @@ func ProxyRandom(c *gin.Context) {
 
 // 获取全部IP
 func ProxyAll(c *gin.Context) {
-
+	anonymous, _ := strconv.Atoi(c.Query("anonymous"))
+	protocol, _ := strconv.Atoi(c.Query("protocol"))
+	country := c.Query("country")
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("size", "10"))
 	if page <= 0 {
@@ -33,7 +38,7 @@ func ProxyAll(c *gin.Context) {
 	if pageSize <= 0 {
 		pageSize = 10
 	}
-	all, err := models.ProxyAll(page, pageSize)
+	all, err := models.ProxyAll(anonymous, protocol, country, page, pageSize)
 	if err != nil {
 		c.JSON(200, serializer.Err(serializer.CodeNotSet, err.Error(), err))
 		return

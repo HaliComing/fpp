@@ -33,7 +33,7 @@
 
 |返回字段|字段类型|说明 |
 |:----- |:------|:----------------------------- |
-|Code | int |状态码 0正常 非0异常 |
+|Code | number |状态码 0正常 非0异常 |
 |Msg | string | 状态信息 |
 |Data | string |版本号 |
 
@@ -77,10 +77,10 @@
 
 |返回字段|字段类型|说明 |
 |:----- |:------|:----------------------------- |
-|Code | int |状态码 0正常 非0异常 |
+|Code | number |状态码 0正常 非0异常 |
 |Msg | string | 状态信息 |
 |Data | string |版本号 |
-|Count | int |IP总数 |
+|Count | number |IP总数 |
 
 #### 接口示例
 
@@ -119,28 +119,31 @@
 |参数|必选|类型|说明|
 |:----- |:-------|:-----|----- |
 |token |是 |string|服务启动时配置的令牌 |
+|anonymous |否 |number|匿名程度 透明:1 普通匿名:2 欺骗匿名:3 高匿:4 |
+|protocol |否 |number|协议 HTTP:1 HTTPS:2 HTTP/HTTPS:3 |
+|country |否 |string|国家 例如：中国 |
 
 #### 返回字段
 
 |返回字段|字段类型|说明 |
 |:----- |:------|:----------------------------- |
-|Code | int |状态码 0正常 非0异常 |
+|Code | number |状态码 0正常 非0异常 |
 |Msg | string | 状态信息 |
 |Data | string |版本号 |
 |IP | string |IP地址 |
 |Port | string |端口 |
-|Protocol | int |支持协议 |
-|Anonymous | int |匿名程度 |
+|Protocol | number |支持协议 HTTP:1 HTTPS:2 HTTP/HTTPS:3 |
+|Anonymous | number |匿名程度 透明:1 普通匿名:2 欺骗匿名:3 高匿:4 |
 |Country | string |国家 |
 |Province | string |省份 |
 |Attribution | string |归属地 |
 |ISP | string |运营商 |
-|Score | int |当前分数 满分10分 |
+|Score | number |当前分数 满分10分 |
 |Source | string |来源地址 |
-|Speed | int |响应速度 单位ms |
+|Speed | number |响应速度 单位ms |
 |CreateTime | string |创建时间 |
 |LastTime | string |最后检测时间 |
-|FailedCount | int |连续失败次数 |
+|FailedCount | number |连续失败次数 |
 
 #### 接口示例
 
@@ -191,31 +194,34 @@
 
 |参数|必选|类型|说明|
 |:----- |:-------|:-----|----- |
-|page |否 |int|页数，默认1开始 |
-|size |否 |int|每页数量，默认10 |
+|anonymous |否 |number|匿名程度 透明:1 普通匿名:2 欺骗匿名:3 高匿:4 |
+|protocol |否 |number|协议 HTTP:1 HTTPS:2 HTTP/HTTPS:3 |
+|country |否 |string|国家 例如：中国 |
+|page |否 |number|页数，默认1开始 |
+|size |否 |number|每页数量，默认10 |
 |token |是 |string|服务启动时配置的令牌 |
 
 #### 返回字段
 
 |返回字段|字段类型|说明 |
 |:----- |:------|:----------------------------- |
-|Code | int |状态码 0正常 非0异常 |
+|Code | number |状态码 0正常 非0异常 |
 |Msg | string | 状态信息 |
 |Data | string |版本号 |
 |IP | string |IP地址 |
 |Port | string |端口 |
-|Protocol | int |支持协议 |
-|Anonymous | int |匿名程度 |
+|Protocol | number |支持协议 HTTP:1 HTTPS:2 HTTP/HTTPS:3 |
+|Anonymous | number |匿名程度 透明:1 普通匿名:2 欺骗匿名:3 高匿:4 |
 |Country | string |国家 |
 |Province | string |省份 |
 |Attribution | string |归属地 |
 |ISP | string |运营商 |
-|Score | int |当前分数 满分10分 |
+|Score | number |当前分数 满分10分 |
 |Source | string |来源地址 |
-|Speed | int |响应速度 单位ms |
+|Speed | number |响应速度 单位ms毫秒 |
 |CreateTime | string |创建时间 |
 |LastTime | string |最后检测时间 |
-|FailedCount | int |连续失败次数 |
+|FailedCount | number |连续失败次数 |
 
 #### 接口示例
 
@@ -277,7 +283,7 @@
 
 |返回字段|字段类型|说明 |
 |:----- |:------|:----------------------------- |
-|Code | int |状态码 0正常 非0异常 |
+|Code | number |状态码 0正常 非0异常 |
 |Msg | string | 状态信息 |
 |Data | string |无 |
 

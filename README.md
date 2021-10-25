@@ -94,9 +94,12 @@ statik -src=assets/build/  -include=*.html,*.ico,*.icon -f
 ```
 
 #### 编译项目
-
+您可以选择在Releases界面下载已编译好的二进制文件。手动编译如下：
 ```shell
 # 开始编译
+# 必须开启CGO_ENABLED
+SET CGO_ENABLED=1
+
 go build -a -o fpp -ldflags "-s"
 ```
 

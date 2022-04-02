@@ -12,6 +12,27 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+func If(condition bool, trueVal, falseVal interface{}) interface{} {
+	if condition {
+		return trueVal
+	}
+	return falseVal
+}
+
+func IfIntArray(condition bool, trueVal, falseVal []int) []int {
+	if condition {
+		return trueVal
+	}
+	return falseVal
+}
+
+func IfStringArray(condition bool, trueVal, falseVal []string) []string {
+	if condition {
+		return trueVal
+	}
+	return falseVal
+}
+
 // RandStringRunes 返回随机字符串
 func RandStringRunes(n int) string {
 	var letterRunes = []rune("1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")

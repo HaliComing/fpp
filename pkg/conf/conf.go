@@ -15,6 +15,7 @@ type database struct {
 // system 系统通用配置
 type system struct {
 	Listen             string `validate:"required"`
+	ProxyListen        string `validate:"required"`
 	Token              string `validate:"required"`
 	Debug              bool
 	NumberOfThreads    int
@@ -32,6 +33,7 @@ var cfg *ini.File
 
 const defaultConf = `[System]
 Listen = :9826
+ProxyListen = :9827
 NumberOfThreads = 50
 Token = {Token}
 `

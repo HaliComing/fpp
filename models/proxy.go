@@ -224,17 +224,17 @@ func ProxyCount() (int64, error) {
 	return count, nil
 }
 
-func ProxyRandomCount(anonymous, protocol int, country string) (int64, error) {
+func ProxyRandomCount(anonymous, protocols []int, countries []string) (int64, error) {
 	var count int64
 	db := DB.Model(&ProxyIP{})
-	if anonymous != 0 {
-		db = db.Where("Anonymous = ?", anonymous)
+	if anonymous != nil && len(anonymous) != 0 {
+		db = db.Where("Anonymous in (?)", anonymous)
 	}
-	if protocol != 0 {
-		db = db.Where("Protocol = ?", protocol)
+	if protocols != nil && len(protocols) != 0 {
+		db = db.Where("Protocol in (?)", protocols)
 	}
-	if country != "" {
-		db = db.Where("Country = ?", country)
+	if countries != nil && len(countries) != 0 {
+		db = db.Where("Country in (?)", countries)
 	}
 	result := db.Count(&count)
 	if result.Error != nil {
@@ -246,42 +246,42 @@ func ProxyRandomCount(anonymous, protocol int, country string) (int64, error) {
 	return count, nil
 }
 
-func ProxyRandom(anonymous, protocol int, country string) (ProxyIP, error) {
-	count, err := ProxyRandomCount(anonymous, protocol, country)
+func ProxyRandom(anonymous, protocols []int, countries []string) (ProxyIP, error) {
+	count, err := ProxyRandomCount(anonymous, protocols, countries)
 	if err != nil {
 		return ProxyIP{}, err
 	}
 	var proxyIP ProxyIP
 	db := DB
-	if anonymous != 0 {
-		db = db.Where("Anonymous = ?", anonymous)
+	if anonymous != nil && len(anonymous) != 0 {
+		db = db.Where("Anonymous in (?)", anonymous)
 	}
-	if protocol != 0 {
-		db = db.Where("Protocol = ?", protocol)
+	if protocols != nil && len(protocols) != 0 {
+		db = db.Where("Protocol in (?)", protocols)
 	}
-	if country != "" {
-		db = db.Where("Country = ?", country)
+	if countries != nil && len(countries) != 0 {
+		db = db.Where("Country in (?)", countries)
 	}
 	rand.Seed(time.Now().UnixNano())
-	rand := rand.Int63n(count)
-	result := db.Limit(1).Offset(rand).Find(&proxyIP)
+	randInt64 := rand.Int63n(count)
+	result := db.Limit(1).Offset(randInt64).Find(&proxyIP)
 	if result.Error != nil {
 		return ProxyIP{}, result.Error
 	}
 	return proxyIP, nil
 }
 
-func ProxyAll(anonymous, protocol int, country string, page, pageSize int) ([]ProxyIP, error) {
+func ProxyAll(anonymous, protocols []int, countries []string, page, pageSize int) ([]ProxyIP, error) {
 	var proxyIPs []ProxyIP
 	db := DB
-	if anonymous != 0 {
-		db = db.Where("Anonymous = ?", anonymous)
+	if anonymous != nil && len(anonymous) != 0 {
+		db = db.Where("Anonymous in (?)", anonymous)
 	}
-	if protocol != 0 {
-		db = db.Where("Protocol = ?", protocol)
+	if protocols != nil && len(protocols) != 0 {
+		db = db.Where("Protocol in (?)", protocols)
 	}
-	if country != "" {
-		db = db.Where("Country = ?", country)
+	if countries != nil && len(countries) != 0 {
+		db = db.Where("Country in (?)", countries)
 	}
 	result := db.Limit(pageSize).Offset((page - 1) * pageSize).Find(&proxyIPs)
 	if result.Error != nil {

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/HaliComing/fpp/models"
 	"github.com/HaliComing/fpp/pkg/serializer"
+	"github.com/HaliComing/fpp/pkg/util"
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"strings"
@@ -14,7 +15,10 @@ func ProxyRandom(c *gin.Context) {
 	anonymous, _ := strconv.Atoi(c.Query("anonymous"))
 	protocol, _ := strconv.Atoi(c.Query("protocol"))
 	country := c.Query("country")
-	random, err := models.ProxyRandom(anonymous, protocol, country)
+	random, err := models.ProxyRandom(
+		util.IfIntArray(anonymous != 0, []int{anonymous}, nil),
+		util.IfIntArray(protocol != 0, []int{protocol}, nil),
+		util.IfStringArray(country != "", []string{country}, nil))
 	if err != nil {
 		c.JSON(200, serializer.Err(serializer.CodeNotSet, err.Error(), err))
 		return
@@ -38,7 +42,10 @@ func ProxyAll(c *gin.Context) {
 	if pageSize <= 0 {
 		pageSize = 10
 	}
-	all, err := models.ProxyAll(anonymous, protocol, country, page, pageSize)
+	all, err := models.ProxyAll(
+		util.IfIntArray(anonymous != 0, []int{anonymous}, nil),
+		util.IfIntArray(protocol != 0, []int{protocol}, nil),
+		util.IfStringArray(country != "", []string{country}, nil), page, pageSize)
 	if err != nil {
 		c.JSON(200, serializer.Err(serializer.CodeNotSet, err.Error(), err))
 		return

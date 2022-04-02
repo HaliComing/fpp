@@ -10,6 +10,7 @@ var DatabaseConfig = &database{
 var SystemConfig = &system{
 	Debug:              false,
 	Listen:             ":9826",
+	ProxyListen:        ":9827",
 	NumberOfThreads:    50,
 	ExtractionInterval: 60,
 	CheckInterval:      15,
